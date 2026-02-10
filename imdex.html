@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kilowatt Calculator</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    background: radial-gradient(circle at top, #2a2a2a, #0f0f0f);
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.app {
+    background: #121212;
+    width: 100%;
+    max-width: 460px;
+    padding: 26px;
+    border-radius: 20px;
+    box-shadow: 0 30px 70px rgba(0,0,0,.7);
+}
+
+/* LOGO FIRE */
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.fire {
+    position: relative;
+    width: 180px;
+    height: 150px;
+}
+
+.flame {
+    position: absolute;
+    bottom: 50px;
+    width: 36px;
+    height: 95px;
+    background: radial-gradient(circle at bottom, #ffd27d, #ff7a18, transparent);
+    border-radius: 50%;
+    animation: flicker 1.2s infinite ease-in-out;
+    opacity: .85;
+}
+
+.flame:nth-child(1) { left: 35px; animation-delay: 0s; }
+.flame:nth-child(2) { left: 75px; animation-delay: .3s; }
+.flame:nth-child(3) { left: 115px; animation-delay: .6s; }
+
+@keyframes flicker {
+    0%   { transform: scaleY(1) translateY(0); }
+    50%  { transform: scaleY(1.18) translateY(-8px); }
+    100% { transform: scaleY(1) translateY(0); }
+}
+
+/* LOGS */
+.logs {
+    position: absolute;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150px;
+    height: 50px;
+}
+
+.log {
+    position: absolute;
+    width: 140px;
+    height: 12px;
+    background: linear-gradient(90deg,#3a1f0f,#6b3a1c,#3a1f0f);
+    border-radius: 10px;
+    box-shadow: 0 0 14px rgba(255,120,0,.45);
+}
+
+.log:nth-child(1) { bottom: 0; }
+.log:nth-child(2) { bottom: 10px; left: 6px; }
+.log:nth-child(3) { bottom: 20px; left: -6px; }
+.log:nth-child(4) { bottom: 30px; left: 3px; }
+
+/* TITLE */
+h1 {
+    margin: 10px 0 0;
+    font-size: 1.6rem;
+    letter-spacing: 0.04em;
+}
+
+/* FORM */
+label {
+    display: block;
+    margin-top: 14px;
+    font-size: 0.85rem;
+    opacity: .85;
+}
+
+input, select {
+    width: 100%;
+    margin-top: 6px;
+    padding: 11px;
+    border-radius: 10px;
+    border: none;
+    font-size: 1rem;
+}
+
+/* BUTTON */
+button {
+    margin-top: 22px;
+    width: 100%;
+    padding: 14px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    border-radius: 14px;
+    border: none;
+    background: linear-gradient(135deg,#ff7a18,#ffb347);
+    cursor: pointer;
+}
+
+/* MODAL */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.modal-content {
+    background: #1b1b1b;
+    padding: 24px;
+    border-radius: 18px;
+    width: 90%;
+    max-width: 380px;
+    text-align: center;
+    box-shadow: 0 25px 60px rgba(0,0,0,.8);
+}
+
+.modal h2 {
+    margin-top: 0;
+}
+
+.kw {
+    font-size: 2.4rem;
+    font-weight: 900;
+    color: #ffb347;
+    margin: 10px 0;
+}
+
+.note {
+    font-size: .75rem;
+    opacity: .6;
+    margin-top: 12px;
+}
+
+.close {
+    margin-top: 16px;
+    background: #333;
+    color: #fff;
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<div class="logo">
+    <div class="fire">
+        <div class="flame"></div>
+        <div class="flame"></div>
+        <div class="flame"></div>
+
+        <div class="logs">
+            <div class="log"></div>
+            <div class="log"></div>
+            <div class="log"></div>
+            <div class="log"></div>
+        </div>
+    </div>
+    <h1>Kilowatt Calculator</h1>
+</div>
+
+<label>Room length (m)</label>
+<input type="number" id="length" step="0.1">
+
+<label>Room width (m)</label>
+<input type="number" id="width" step="0.1">
+
+<label>Ceiling height (m)</label>
+<input type="number" id="height" step="0.1" value="2.4">
+
+<label>Insulation</label>
+<select id="insulation">
+    <option value="1.25">Poor / draughty</option>
+    <option value="1.0" selected>Average</option>
+    <option value="0.85">Good / modern</option>
+</select>
+
+<label>Climate</label>
+<select id="climate">
+    <option value="0.9">Mild</option>
+    <option value="1.0" selected>UK typical</option>
+    <option value="1.15">Cold / exposed</option>
+</select>
+
+<button onclick="calculate()">🔥 Calculate</button>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <h2>Recommended Output</h2>
+        <div class="kw" id="kw"></div>
+        <div id="rounded"></div>
+        <div class="note">Rule-of-thumb estimate. Installer advice always wins.</div>
+        <button class="close" onclick="closeModal()">Close</button>
+    </div>
+</div>
+
+<script>
+function calculate() {
+    const l = parseFloat(document.getElementById("length").value);
+    const w = parseFloat(document.getElementById("width").value);
+    const h = parseFloat(document.getElementById("height").value);
+    const insulation = parseFloat(document.getElementById("insulation").value);
+    const climate = parseFloat(document.getElementById("climate").value);
+
+    if (!l || !w || !h) {
+        alert("Please enter all room dimensions");
+        return;
+    }
+
+    const volume = l * w * h;
+    const kw = (volume / 14) * insulation * climate;
+    const rounded = Math.ceil(kw * 2) / 2;
+
+    document.getElementById("kw").textContent = kw.toFixed(1) + " kW";
+    document.getElementById("rounded").textContent = "Choose a " + rounded + " kW stove";
+
+    document.getElementById("modal").style.display = "flex";
+}
+
+function closeModal() {
+    document.getElementById("modal").style.display = "none";
+}
+</script>
+
+</body>
+</html>
