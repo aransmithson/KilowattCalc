@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Kilowatt Forge – Wood Burner Calculator</title>
+<title>Kilowatt Calc – Wood Burner Calculator</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -25,7 +25,6 @@ body {
   min-height: 100vh;
 }
 
-/* ===== APP ===== */
 .app {
   width: 100%;
   max-width: 420px;
@@ -42,8 +41,8 @@ body {
 }
 
 .logo h1 {
-  font-size: 1.8rem;
-  letter-spacing: .5px;
+  font-size: 1.9rem;
+  letter-spacing: .4px;
   margin: 0;
 }
 
@@ -61,7 +60,7 @@ body {
   width: 38px;
   height: 70px;
   transform: translateX(-50%);
-  border-radius: 50% 50% 50% 50%;
+  border-radius: 50%;
   animation: flicker 2s infinite ease-in-out;
 }
 
@@ -83,18 +82,10 @@ body {
     #ffcc33 40%,
     #ff8c00 75%,
     transparent 80%);
-  animation-delay: .2s;
 }
 
-.flame.left {
-  transform: translateX(-32px) rotate(-8deg);
-  animation-delay: .3s;
-}
-
-.flame.right {
-  transform: translateX(8px) rotate(6deg);
-  animation-delay: .5s;
-}
+.flame.left { transform: translateX(-32px) rotate(-8deg); animation-delay:.3s }
+.flame.right { transform: translateX(8px) rotate(6deg); animation-delay:.5s }
 
 @keyframes flicker {
   0% { transform: translateX(-50%) scaleY(1); opacity:.85 }
@@ -109,7 +100,6 @@ body {
   left: 50%;
   transform: translateX(-50%);
   width: 60px;
-  height: 16px;
 }
 
 .log {
@@ -121,21 +111,33 @@ body {
   box-shadow: 0 0 10px rgba(255,90,0,.6);
 }
 
-.log:nth-child(1) { bottom: 0; }
-.log:nth-child(2) { bottom: 6px; left: -6px; opacity:.9 }
-.log:nth-child(3) { bottom: 12px; left: 6px; opacity:.8 }
+.log:nth-child(1) { bottom: 0 }
+.log:nth-child(2) { bottom: 6px; left:-6px; opacity:.9 }
+.log:nth-child(3) { bottom: 12px; left:6px; opacity:.8 }
 
-/* ===== FORM ===== */
+/* ===== PANELS ===== */
 .panel {
   background: linear-gradient(180deg,#1f1f1f,#141414);
   border-radius: 16px;
   padding: 20px;
   box-shadow: 0 20px 40px rgba(0,0,0,.6);
+  margin-bottom: 20px;
 }
 
-.field {
-  margin-bottom: 16px;
+.explainer {
+  font-size: .95rem;
+  line-height: 1.6;
+  opacity: .9;
 }
+
+.explainer h2 {
+  margin-top: 0;
+  color: var(--accent);
+  font-size: 1.2rem;
+}
+
+/* ===== FORM ===== */
+.field { margin-bottom: 16px; }
 
 label {
   font-size: .9rem;
@@ -157,7 +159,6 @@ input, select {
 button {
   width: 100%;
   padding: 16px;
-  margin-top: 10px;
   background: linear-gradient(135deg,#ff9f1c,#ff6a00);
   color: #000;
   font-size: 1.1rem;
@@ -216,7 +217,24 @@ button:hover { filter: brightness(1.1); }
         <div class="log"></div>
       </div>
     </div>
-    <h1>Kilowatt Forge</h1>
+    <h1>Kilowatt Calc</h1>
+  </div>
+
+  <div class="panel explainer">
+    <h2>How this works</h2>
+    <p>
+      Kilowatt Calc estimates the ideal wood burner output (kW) based on the
+      <strong>volume of your room</strong> and your <strong>local climate</strong>.
+    </p>
+    <p>
+      A stove that’s too small won’t heat the space effectively. Too large,
+      and it’ll burn inefficiently, waste fuel, and overheat the room.
+    </p>
+    <p>
+      This calculator uses a standard heat requirement per cubic metre,
+      adjusted for climate, to give a realistic starting point when choosing
+      a stove.
+    </p>
   </div>
 
   <div class="panel">
@@ -244,7 +262,7 @@ button:hover { filter: brightness(1.1); }
       </select>
     </div>
 
-    <button onclick="calculate()">Forge My kW</button>
+    <button onclick="calculate()">Calculate kW</button>
   </div>
 
 </div>
