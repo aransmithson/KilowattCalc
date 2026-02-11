@@ -276,25 +276,39 @@ button:hover { filter: brightness(1.1); }
 </div>
 
 <script>
-function calculate() {
-  const l = +length.value;
-  const w = +width.value;
-  const h = +height.value;
-  const c = +climate.value;
+  const lengthEl = document.getElementById("length");
+  const widthEl = document.getElementById("width");
+  const heightEl = document.getElementById("height");
+  const climateEl = document.getElementById("climate");
+  const modalEl = document.getElementById("modal");
+  const resultEl = document.getElementById("result");
 
-  if (!l || !w || !h) return;
+  function calculate() {
+    const l = Number(lengthEl.value);
+    const w = Number(widthEl.value);
+    const h = Number(heightEl.value);
+    const c = Number(climateEl.value);
 
-  const volume = l * w * h;
-  const kw = Math.round(volume * c * 10) / 10;
+    // Basic validation
+    if (!l || !w || !h) return;
 
-  result.textContent = `${kw} kW Wood Burner`;
-  modal.style.display = "flex";
-}
+    const volume = l * w * h;
+    const kw = Math.round(volume * c * 10) / 10;
 
-function closeModal() {
-  modal.style.display = "none";
-}
+    resultEl.textContent = `${kw} kW Wood Burner`;
+    modalEl.style.display = "flex";
+  }
+
+  function closeModal() {
+    modalEl.style.display = "none";
+  }
+
+  // Optional: allow clicking backdrop to close
+  modalEl.addEventListener("click", (e) => {
+    if (e.target === modalEl) closeModal();
+  });
 </script>
+
 
 </body>
 </html>
